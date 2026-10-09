@@ -213,7 +213,7 @@ def train_models(file_bytes):
     def evaluate(name, model, grid=None):
         if grid is not None:
             search = GridSearchCV(
-                model, grid, cv=gcv, scoring='r2', n_jobs=-1
+                model, grid, cv=gcv, scoring='r2', n_jobs=1, pre_dispatch=1
             )
             search.fit(Xtr, ytr, groups=groups)
             fitted = search.best_estimator_
@@ -240,21 +240,21 @@ def train_models(file_bytes):
     evaluate(
         'Ridge Regression',
         Ridge(),
-        {'alpha': [0.01, 0.1, 1.0, 10.0, 50.0, 100.0]}
+        {'alpha': [0.1, 1.0, 10.0, 100.0]}
     )
 
     evaluate(
         'Lasso Regression',
         Lasso(max_iter=10000),
-        {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1.0]}
+        {'alpha': [0.001, 0.01, 0.1, 1.0]}
     )
 
     evaluate(
         'ElasticNet Regression',
         ElasticNet(max_iter=10000, random_state=42),
         {
-            'alpha': [0.001, 0.01, 0.1, 1.0],
-            'l1_ratio': [0.1, 0.3, 0.5, 0.7, 0.9]
+            'alpha': [0.01, 0.1, 1.0],
+            'l1_ratio': [0.2, 0.5, 0.8]
         }
     )
 
@@ -266,7 +266,7 @@ def train_models(file_bytes):
             ('linear', LinearRegression())
         ])
         scores = cross_val_score(
-            pipe, Xtr, ytr, cv=gcv, groups=groups, scoring='r2', n_jobs=-1
+            pipe, Xtr, ytr, cv=gcv, groups=groups, scoring='r2', n_jobs=1
         )
         poly_scores[degree] = scores.mean()
 
@@ -282,15 +282,15 @@ def train_models(file_bytes):
     evaluate(
         'Decision Tree Regressor',
         DecisionTreeRegressor(random_state=42),
-        {'max_depth': [3, 5, 7, 10, 15, None]}
+        {'max_depth': [5, 10, None]}
     )
 
     evaluate(
         'Random Forest Regressor',
-        RandomForestRegressor(random_state=42, n_jobs=-1),
+        RandomForestRegressor(random_state=42, n_jobs=1),
         {
-            'n_estimators': [100, 300, 500],
-            'max_depth': [5, 10, 15, None]
+            'n_estimators': [50, 100],
+            'max_depth': [5, 10]
         }
     )
 
@@ -298,9 +298,9 @@ def train_models(file_bytes):
         'Gradient Boosting Regressor',
         GradientBoostingRegressor(random_state=42),
         {
-            'n_estimators': [100, 300],
-            'learning_rate': [0.01, 0.05, 0.1],
-            'max_depth': [2, 3, 4]
+            'n_estimators': [50, 100],
+            'learning_rate': [0.05, 0.1],
+            'max_depth': [2, 3]
         }
     )
 
@@ -308,16 +308,16 @@ def train_models(file_bytes):
         'Support Vector Regressor (SVR)',
         SVR(),
         {
-            'C': [0.1, 1, 10, 100],
+            'C': [1, 10],
             'kernel': ['linear', 'rbf'],
-            'gamma': ['scale', 'auto']
+            'gamma': ['scale']
         }
     )
 
     evaluate(
         'K-Nearest Neighbors Regressor',
         KNeighborsRegressor(),
-        {'n_neighbors': [3, 5, 7, 9, 11, 15, 21]}
+        {'n_neighbors': [3, 7, 15]}
     )
 
     results_df = pd.DataFrame(results).sort_values('R2', ascending=False).reset_index(drop=True)
@@ -356,8 +356,13 @@ if uploaded is None:
 
 file_bytes = uploaded.getvalue()
 
-with st.spinner("Preparing data and training the regression models..."):
-    result = train_models(file_bytes)
+with st.spinner("Preparing data and training the regression models... This may take a few minutes."):
+    try:
+        result = train_models(file_bytes)
+    except Exception as exc:
+        st.error("The workbook could not be processed or the models could not be trained. Check that the Excel file contains the expected columns and all four Round sheets.")
+        st.exception(exc)
+        st.stop()
 
 results_df = result['results']
 best_name = result['best_model_name']
@@ -498,10 +503,10 @@ with tab4:
         best_model,
         result['X_test_processed'],
         result['y_test'],
-        n_repeats=10,
+        n_repeats=5,
         random_state=42,
         scoring='r2',
-        n_jobs=-1
+        n_jobs=1
     )
     perm_df = pd.DataFrame({
         'Feature': result['feature_names'],

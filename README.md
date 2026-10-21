@@ -2,7 +2,6 @@
 
 **Academic Year:** 2026–2027  
 **Course:** 23CSE301 — Machine Learning  
-**Project:** Regression, Classification, and Clustering
 
 ## Overview
 
@@ -14,7 +13,7 @@ The project has three tracks:
 2. **Classification:** Classifying EEG motor-imagery trials into four classes.
 3. **Clustering:** Exploring structure in EEG motor-imagery data using unsupervised clustering.
 
-> **Important:** Dataset access, filenames, paths, and licences must be checked before running the notebooks. The README describes the datasets referenced by the submitted notebooks; it does not include the datasets themselves.
+
 
 ## Repository Structure
 
@@ -35,7 +34,6 @@ Use the following layout, and adjust paths if your current repository differs:
     └── clustering.ipynb
 ```
 
-The `.mat` file is needed if the classification notebook uses evaluation labels stored in it. Dataset files are not guaranteed to be included in the repository. Do not commit restricted or large datasets unless permitted by the dataset licence and course instructions.
 
 ## Track 1 — Regression
 
@@ -271,13 +269,11 @@ Then restart each notebook kernel and run all cells from top to bottom. Verify t
 
 ## Team Information
 
-Add the information required by your instructor before submission.
 
-- **Team name:** `[Add team name]`
-- **Member 1:** `[Add name]`
-- **Member 2:** `[Add name]`
-- **Member 3:** `[Add name]`
-- **Instructor / problem statement:** `[Add assigned details]`
+- **Member 1:** `[Akilan S S]`
+- **Member 2:** `[Naveen Velan S N]`
+- **Member 3:** `[Shreyas N]`
+
 
 ## Limitations
 
@@ -288,7 +284,5 @@ Add the information required by your instructor before submission.
 
 ## References and Academic Integrity
 
-- Course source: **23CSE301 Machine Learning Capstone Project — Guidelines, Algorithm List & Evaluation Rubrics, Academic Year 2026–2027**.
-- EEG dataset: BCI Competition IV, Dataset 2a, subject A01, where applicable to the supplied recordings.
 - Cite any external code, documentation, or other resources used in the notebooks.
 - If generative AI was used for code scaffolding or documentation, disclose and cite that assistance in accordance with the course guidelines. Project-specific analysis, interpretation, and feature-engineering decisions must be reviewed and owned by the team.

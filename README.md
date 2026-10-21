@@ -270,9 +270,9 @@ Then restart each notebook kernel and run all cells from top to bottom. Verify t
 ## Team Information
 
 
-- **Member 1:** `[Akilan S S]`
-- **Member 2:** `[Naveen Velan S N]`
-- **Member 3:** `[Shreyas N]`
+- **Member 1:** Akilan S S`[CB.SC.U4CSE24707]`
+- **Member 2:** Naveen Velan S N`[CB.SC.U4CSE24734]`
+- **Member 3:** Shreyas N`[CB.SC.U4CSE24750]`
 
 
 ## Limitations

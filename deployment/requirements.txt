@@ -1,7 +1,14 @@
-streamlit
-pandas
+# Core data science and notebook tools
 numpy
+pandas
+scipy
+scikit-learn
 matplotlib
 seaborn
-scikit-learn
 openpyxl
+jupyterlab
+ipykernel
+joblib
+
+# EEG processing and hierarchical clustering
+mne
